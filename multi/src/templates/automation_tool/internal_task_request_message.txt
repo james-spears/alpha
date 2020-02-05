@@ -1,0 +1,35 @@
+{% load i18n %}{% autoescape off %}
+{% blocktrans %} User: {{ user }} submitted a work order at {{ domain }}{% endblocktrans %}
+
+
+{% blocktrans %}This is an automated message just letting the support team know that there has been a task scheduled by {{user}}, ({{email}}). 
+Module: {{ name_flag }}, configuration: {{ config_file }} has been added to the task queue and will be attemped shortly. You will be notified at this address when this task has
+finished and the results should be attached.{% endblocktrans %} 
+
+COMPANY:
+{{ company_name }}
+
+MODULE:
+{{ name_flag }}
+
+CONFIG FILE:
+{{ config_file }}
+
+RESULTS FILE NAME:
+{{ output_file_name }}
+
+TASK ID:
+{{ task_id }}
+
+OUTPUT: 
+{{ output }}
+
+ERROR:
+{{ err }}
+
+ROUTE MAP:
+{{ route_map }}
+
+{% blocktrans %}Keep up the good work {{ site_name }} team!{% endblocktrans %}
+
+{% endautoescape %}

@@ -1,0 +1,4 @@
+{% load i18n %}
+{% autoescape off %}
+{% blocktrans %}Re: Support requested at {{domain}}{% endblocktrans %}
+{% endautoescape %}

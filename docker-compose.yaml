@@ -1,0 +1,90 @@
+version: '3.7'
+services:
+  # API Service
+  api:
+    restart: always
+    image: gcr.io/helpful-bunny/github.com/jameone/alpha_multi_dev:latest
+    volumes:
+      - api_log_pv:/home/docker/alpha/multi/src/alpha/logs
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rdms
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file: ./multi/api.env
+    command: ["/home/docker/alpha/multi/src/start_api.sh"]
+  # Scheduler Service
+  scheduler:
+    restart: always
+    image: gcr.io/helpful-bunny/github.com/jameone/alpha_multi_dev:latest
+    depends_on:
+      - worker
+      - rdms
+    env_file: ./multi/api.env
+    command: ["/home/docker/alpha/multi/src/start_scheduler.sh"]
+  # Worker Service
+  worker:
+    restart: always
+    image: gcr.io/helpful-bunny/github.com/jameone/alpha_multi_dev:latest
+    depends_on:
+      - api
+      - rdms
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file: ./multi/worker.env
+    command: ["/home/docker/alpha/multi/src/start_worker.sh"]
+  # Monitor Service
+  monitor:
+    restart: always
+    image: gcr.io/helpful-bunny/github.com/jameone/alpha_multi_dev:latest
+    ports:
+      - "5555:5555"
+    depends_on: 
+      - worker
+      - rdms
+    env_file: ./multi/monitor.env
+    command: ["/home/docker/alpha/multi/src/start_monitor.sh"]
+  # Web Service
+  web:
+    restart: always
+    image: gcr.io/helpful-bunny/github.com/jameone/alpha_web_dev:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+      - rdms
+    deploy:
+      mode: replicated
+      replicas: 1
+  # RDMS Service
+  rdms:
+    restart: 'no'
+    image: gcr.io/helpful-bunny/github.com/jameone/alpha_rdms_local:latest
+    volumes:
+      - rdms_pv:/var/lib/postgresql/data
+    env_file: ./rdms/rdms.env
+    ports:
+      - '5432:5432'
+  # Redis Cluster
+  broker:
+    restart: always
+    image: gcr.io/helpful-bunny/github.com/jameone/alpha_broker_local:latest
+    volumes:
+      - broker_pv:/data
+    sysctls:
+      net.core.somaxconn: 1024
+    ports:
+      - '6379:6379'
+    volumes:
+      - broker_pv:/data
+
+volumes:
+  api_log_pv:
+    name: api_log_pv
+  rdms_pv:
+    name: rdms_pv
+  broker_pv:
+    name: broker_pv

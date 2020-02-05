@@ -1,0 +1,26 @@
+{% load i18n %}{% autoescape off %}
+{% blocktrans %}Support request from {{domain}}{% endblocktrans %}
+
+
+{% blocktrans %}This is an automated message just letting the support team know that there has been a support request from {{email}} 
+A confirmation email has been sent advising that someone from support will be reaching out shortly{% endblocktrans %}
+
+{% blocktrans %}The issue description follows:{% endblocktrans %}
+
+{% blocktrans %}
+{{content}}
+{% endblocktrans %}
+
+{% blocktrans %}
+Please follow up with {{email}}.
+{% endblocktrans %}
+
+
+{% blocktrans %}
+As a reminder, never ask for any personal information like passwords or payment information over email.{% endblocktrans %}
+
+{% trans "Keep up the good work!" %}
+
+{% blocktrans %}The {{ site_name }} robot.{% endblocktrans %}
+
+{% endautoescape %}

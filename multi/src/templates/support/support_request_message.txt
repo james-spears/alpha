@@ -1,0 +1,13 @@
+{% load i18n %}{% autoescape off %}
+{% blocktrans %}You're receiving this email because someone requested support at {{domain}}{% endblocktrans %}
+
+
+{% blocktrans %}This is an automated message just letting you know your request has been received and is being forwarded to the support team. 
+A representitive will be reaching out shortly.{% endblocktrans %} 
+
+{% blocktrans %}
+As a reminder, never give out any personal information like passwords or payment information over email. We won't ask for that.{% endblocktrans %}
+
+{% blocktrans %}The {{ site_name }} team{% endblocktrans %}
+
+{% endautoescape %}

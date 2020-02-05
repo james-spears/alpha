@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: monitor
+  name: monitor
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      io.kompose.service: monitor
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: monitor
+    spec:
+      containers:
+      - args:
+        - /home/docker/alpha/multi/src/start_monitor.sh
+        env:
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: ADMIN_PASSWORD
+              name: monitor-multi-monitor-env
+        - name: ADMIN_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              key: ADMIN_USERNAME
+              name: monitor-multi-monitor-env
+        - name: CELERY_BROKER_URL
+          valueFrom:
+            configMapKeyRef:
+              key: CELERY_BROKER_URL
+              name: monitor-multi-monitor-env
+        - name: CELERY_RESULT_BACKEND
+          valueFrom:
+            configMapKeyRef:
+              key: CELERY_RESULT_BACKEND
+              name: monitor-multi-monitor-env
+        - name: LOCAL
+          valueFrom:
+            configMapKeyRef:
+              key: LOCAL
+              name: monitor-multi-monitor-env
+        image: gcr.io/helpful-bunny/helpful-bunny-repo/multi_dev:latest
+        name: monitor
+        ports:
+        - containerPort: 5555
+        resources: {}
+      restartPolicy: Always
+status: {}

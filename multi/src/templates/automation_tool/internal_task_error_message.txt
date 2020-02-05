@@ -1,0 +1,36 @@
+{% load i18n %}{% autoescape off %}
+
+{% blocktrans %}This is an automated message just letting the support team know task id:{{ task_id }} has encountered an error. 
+{% endblocktrans %}
+
+This request provided {{ config_file }} for {{ name_flag }}.
+Please find the error description below.
+
+COMPANY:
+{{ company_name }}
+
+MODULE:
+{{ name_flag }}
+
+CONFIG FILE:
+{{ config_file }}
+
+RESULTS FILE NAME:
+{{ output_file_name }}
+
+TASK ID:
+{{ task_id }}
+
+OUTPUT: 
+{{ output }}
+
+ERROR:
+{{ err }}
+
+ROUTE MAP:
+{{ route_map }}
+
+{% blocktrans %}Thanks for using {{ domain }} !{% endblocktrans %}
+
+{% blocktrans %}The {{ site_name }} team{% endblocktrans %}
+{% endautoescape %}

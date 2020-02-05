@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  ADMIN_PASSWORD: '@ABC123xyz'
+  ADMIN_USERNAME: Admin
+  CELERY_BROKER_URL: redis://broker:6379/0
+  CELERY_RESULT_BACKEND: redis://broker:6379/1
+  LOCAL: "0"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: monitor-multi-monitor-env
+  name: monitor-multi-monitor-env

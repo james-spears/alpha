@@ -1,0 +1,26 @@
+{% load i18n %}{% autoescape off %}
+{% blocktrans %}You're receiving this email because someone submitted a work order at {{ domain }}{% endblocktrans %}
+
+
+{% blocktrans %}
+This is an automated message letting you know your request has been received and has been added to the task queue and will be attemped shortly. You will be notified at this address when this task has finished and instructions on how to access the result will be provided.
+{% endblocktrans %}
+
+COMPANY:
+{{ company_name }}
+
+MODULE:
+{{ name_flag }}
+
+CONFIG FILE:
+{{ config_file }}
+
+RESULTS FILE NAME:
+{{ output_file_name }}
+
+
+{% blocktrans %}Thanks for using {{ domain }} !{% endblocktrans %}
+
+{% blocktrans %}The {{site_name}} team{% endblocktrans %}
+
+{% endautoescape %}

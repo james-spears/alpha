@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rdms
+  name: rdms
+spec:
+  containers:
+  - env:
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        configMapKeyRef:
+          key: POSTGRES_PASSWORD
+          name: rdms-rdms-rdms-env
+    - name: POSTGRES_USER
+      valueFrom:
+        configMapKeyRef:
+          key: POSTGRES_USER
+          name: rdms-rdms-rdms-env
+    image: gcr.io/helpful-bunny/helpful-bunny-repo/rdms_dev:latest
+    name: rdms
+    ports:
+    - containerPort: 5432
+    resources: {}
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: rdms-pv
+      subPath: postgres
+  restartPolicy: Never
+  volumes:
+  - name: rdms-pv
+    persistentVolumeClaim:
+      claimName: rdms-pv
+status: {}

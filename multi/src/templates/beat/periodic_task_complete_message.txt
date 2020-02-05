@@ -1,0 +1,21 @@
+{% load i18n %}{% autoescape off %}
+
+{% blocktrans %}
+This is an automated message letting you know task id:{{ task_id }} has completed. 
+{% endblocktrans %}
+
+Please ensure the task has completed. If not notify the site admin, action will need to be taken.
+
+
+TASK ID:
+{{ task_id }}
+
+TASK DESCRIPTION:
+{{ task }}
+
+COMPLETED:
+{{ completed }}
+
+{% blocktrans %}The {{ sitename }} team.{% endblocktrans %}
+
+{% endautoescape %}

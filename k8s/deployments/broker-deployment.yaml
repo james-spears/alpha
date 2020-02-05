@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: broker
+  name: broker
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      io.kompose.service: broker
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml + mod
+        kompose.version: 1.19.0 (f63a961c)
+        # security.alpha.kubernetes.io/unsafe-sysctls: net.core.somaxconn=1024
+      creationTimestamp: null
+      labels:
+        io.kompose.service: broker
+    spec:
+      containers:
+      - image: gcr.io/helpful-bunny/helpful-bunny-repo/broker_dev:latest
+        name: broker
+        ports:
+        - containerPort: 6379
+        resources: {}
+        volumeMounts:
+        - mountPath: /data
+          name: broker-pv
+          subPath: redis
+      restartPolicy: Always
+      volumes:
+      - name: broker-pv
+        persistentVolumeClaim:
+          claimName: broker-pv
+      # securityContext:
+      #   sysctls:
+      #   - name: net.core.somaxconn
+      #     value: "1024"
+status: {}

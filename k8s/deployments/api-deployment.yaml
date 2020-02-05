@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: api
+  name: api
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      io.kompose.service: api
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: api
+    spec:
+      containers:
+      - args:
+        - /home/docker/alpha/multi/src/start_api.sh
+        env:
+        - name: ADMIN_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              key: ADMIN_EMAIL
+              name: api-multi-api-env
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: ADMIN_PASSWORD
+              name: api-multi-api-env
+        - name: ADMIN_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              key: ADMIN_USERNAME
+              name: api-multi-api-env
+        - name: CELERY_BROKER_URL
+          valueFrom:
+            configMapKeyRef:
+              key: CELERY_BROKER_URL
+              name: api-multi-api-env
+        - name: CELERY_RESULT_BACKEND
+          valueFrom:
+            configMapKeyRef:
+              key: CELERY_RESULT_BACKEND
+              name: api-multi-api-env
+        - name: DATABASE
+          valueFrom:
+            configMapKeyRef:
+              key: DATABASE
+              name: api-multi-api-env
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              key: DEBUG
+              name: api-multi-api-env
+        - name: DJANGO_APP_MODULE
+          valueFrom:
+            configMapKeyRef:
+              key: DJANGO_APP_MODULE
+              name: api-multi-api-env
+        - name: EMAIL_HOST_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: EMAIL_HOST_PASSWORD
+              name: api-multi-api-env
+        - name: GUNICORN_GROUP
+          valueFrom:
+            configMapKeyRef:
+              key: GUNICORN_GROUP
+              name: api-multi-api-env
+        - name: GUNICORN_USER
+          valueFrom:
+            configMapKeyRef:
+              key: GUNICORN_USER
+              name: api-multi-api-env
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              key: JWT_SECRET
+              name: api-multi-api-env
+        - name: SQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_HOST
+              name: api-multi-api-env
+        - name: SQL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_PASSWORD
+              name: api-multi-api-env
+        - name: INGRESS_IP
+          valueFrom:
+            configMapKeyRef:
+              key: INGRESS_IP
+              name: api-multi-api-env
+        - name: SQL_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_PORT
+              name: api-multi-api-env
+        image: gcr.io/helpful-bunny/helpful-bunny-repo/multi_dev:latest
+        name: api
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        resources: {}
+      restartPolicy: Always
+status: {}

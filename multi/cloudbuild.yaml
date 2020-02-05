@@ -1,0 +1,5 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/helpful-bunny/helpful-bunny-repo/multi_dev:$SHORT_SHA', '-t', 'gcr.io/helpful-bunny/helpful-bunny-repo/multi_dev:latest', '.']
+    dir: 'multi'
+images: ['gcr.io/helpful-bunny/helpful-bunny-repo/multi_dev']

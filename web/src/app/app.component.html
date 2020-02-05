@@ -1,0 +1,18 @@
+<div class="content">
+  <div class="mat-display-3">
+    <span>{{ title }}</span>
+  </div>
+  
+  <!-- MENU -->
+  <mat-menu #appMenu="matMenu">
+    <button mat-menu-item routerLink="settings">Settings</button>
+    <button mat-menu-item routerLink="help">Help</button>
+    <button mat-menu-item routerLink="upload">Upload</button>
+  </mat-menu>
+  
+  <button mat-icon-button [matMenuTriggerFor]="appMenu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</div>
+
+<router-outlet></router-outlet>

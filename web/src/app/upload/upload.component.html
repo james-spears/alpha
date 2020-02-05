@@ -1,0 +1,9 @@
+<div class="content" role="main">
+  <form action="submit">
+    <div *ngIf="fileName">
+      {{ fileName }}
+    </div>
+    <button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
+    <input hidden (change)="onFileSelected()" #fileInput type="file" id="file">
+  </form>
+  </div>

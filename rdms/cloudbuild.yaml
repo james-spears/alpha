@@ -1,0 +1,5 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/helpful-bunny/helpful-bunny-repo/rdms_dev:$SHORT_SHA', '-t', 'gcr.io/helpful-bunny/helpful-bunny-repo/rdms_dev:latest', '.']
+    dir: 'rdms'
+images: ['gcr.io/helpful-bunny/helpful-bunny-repo/rdms_dev']

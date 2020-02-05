@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: worker
+  name: worker
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      io.kompose.service: worker
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: worker
+    spec:
+      containers:
+      - args:
+        - /home/docker/alpha/multi/src/start_worker.sh
+        env:
+        - name: ADMIN_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              key: ADMIN_EMAIL
+              name: worker-multi-worker-env
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: ADMIN_PASSWORD
+              name: worker-multi-worker-env
+        - name: ADMIN_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              key: ADMIN_USERNAME
+              name: worker-multi-worker-env
+        - name: CELERY_BROKER_URL
+          valueFrom:
+            configMapKeyRef:
+              key: CELERY_BROKER_URL
+              name: worker-multi-worker-env
+        - name: CELERY_RESULT_BACKEND
+          valueFrom:
+            configMapKeyRef:
+              key: CELERY_RESULT_BACKEND
+              name: worker-multi-worker-env
+        - name: DATABASE
+          valueFrom:
+            configMapKeyRef:
+              key: DATABASE
+              name: worker-multi-worker-env
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              key: DEBUG
+              name: worker-multi-worker-env
+        - name: DJANGO_APP_MODULE
+          valueFrom:
+            configMapKeyRef:
+              key: DJANGO_APP_MODULE
+              name: worker-multi-worker-env
+        - name: EMAIL_HOST_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: EMAIL_HOST_PASSWORD
+              name: worker-multi-worker-env
+        - name: GUNICORN_GROUP
+          valueFrom:
+            configMapKeyRef:
+              key: GUNICORN_GROUP
+              name: worker-multi-worker-env
+        - name: GUNICORN_USER
+          valueFrom:
+            configMapKeyRef:
+              key: GUNICORN_USER
+              name: worker-multi-worker-env
+        - name: SQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_HOST
+              name: worker-multi-worker-env
+        - name: SQL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_PASSWORD
+              name: worker-multi-worker-env
+        - name: SQL_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_PORT
+              name: worker-multi-worker-env
+        image: gcr.io/helpful-bunny/helpful-bunny-repo/multi_dev:latest
+        name: worker
+        resources: {}
+      restartPolicy: Always
+status: {}

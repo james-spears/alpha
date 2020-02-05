@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  ADMIN_EMAIL: alpha@example.com
+  ADMIN_PASSWORD: '@ABC123xyz'
+  ADMIN_USERNAME: Admin
+  CELERY_BROKER_URL: redis://broker:6379/0
+  CELERY_RESULT_BACKEND: redis://broker:6379/1
+  DATABASE: postgres
+  DEBUG: "False"
+  DJANGO_APP_MODULE: alpha
+  EMAIL_HOST_PASSWORD: '#ProxyPassfour40four'
+  GUNICORN_GROUP: docker
+  GUNICORN_USER: docker
+  JWT_SECRET: dflvkjhsfd43598023498edofigj34958fjeogeiwj@#$#$@DFGVDOK543ok
+  SQL_HOST: rdms
+  SQL_PASSWORD: docker
+  SQL_PORT: "5432"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: scheduler-multi-api-env
+  name: scheduler-multi-api-env

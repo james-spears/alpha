@@ -1,0 +1,31 @@
+{% load i18n %}{% autoescape off %}
+
+{% blocktrans %}
+This is an automated message letting you know task id:{{ task_id }} has completed. 
+{% endblocktrans %}
+
+If the automation run generated output it will be found in the results folder {{ output_folder_name }}, with file name {{ output_file_name }}.
+
+LINK:
+{{ domain }}/ui/automation/{{ url_company_name }}/Automated%20Testing/result/{{ url_name_flag }}
+
+COMPANY:
+{{ company_name }}
+
+MODULE:
+{{ name_flag }}
+
+CONFIG FILE:
+{{ config_file }}
+
+RESULTS_FOLDER_NAME:
+{{ output_folder_name }}
+
+RESULTS FILE NAME(S):
+{{ output_file_name }}
+
+{% blocktrans %}Thanks for using {{ domain }} !{% endblocktrans %}
+
+{% blocktrans %}The {{ site_name }} team{% endblocktrans %}
+
+{% endautoescape %}

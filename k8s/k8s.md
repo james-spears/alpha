@@ -1,8 +1,8 @@
 # Kubernetes Deployment on GCP
 ## Disclaimer
 
-As of version 0.0.1 stateful components such as the rdms service, and the broker service will require 
-implemtation of consideration #2. (mapping to Google Cloud) in order to achieve highly available services.
+As of version 0.0.1 state-ful components such as the rdms service, and the broker service will require 
+implementation of consideration #2. (mapping to Google Cloud) in order to achieve highly available services.
 
 ### Current Environment 
 
@@ -18,9 +18,9 @@ All manifests are in ./k8s directory. It is suggested to login to Google Cloud C
 
 ## Procedure
 
-It is possible to rearrange some of the steps below. Follow these exactly and you should get an idea of the dependancy at component level. You may then wish to automate this process in a slightly different order.
+It is possible to rearrange some of the steps below. Follow these exactly and you should get an idea of the dependency at component level. You may then wish to automate this process in a slightly different order.
 
-0. Create a project on Google Cloud Console. Naviagte to the console here: https://console.cloud.google.com/ and get familiar with the interface by creating a project. If you get stuck refer to the documentation.
+0. Create a project on Google Cloud Console. Navigate to the console here: https://console.cloud.google.com/ and get familiar with the interface by creating a project. If you get stuck refer to the documentation.
 
     * Use the console to create a new project.
     * If you do not have the `gcloud` CLI that comes with the Google Cloud SDK, download Google Cloud SDK. You can find the SDK here: https://cloud.google.com/sdk/
@@ -28,7 +28,7 @@ It is possible to rearrange some of the steps below. Follow these exactly and yo
     ```
     gcloud init
     ```
-    and set up the deafult project so the `gcloud` SDK uses the project you just created by default.
+    and set up the default project so the `gcloud` SDK uses the project you just created by default.
     * Use `gcloud` CLI or console to activate GKE and create a cluster. For our purposes the a single node n1-standard-2 instance will suffice. Use default Kubernetes version currently `1.13.11-gke.14 (default)`
     * Using the GCP console, navigate to GKE. Once you have selected GKE > Clusters, find the cluster you just created and the "connect button" there should be a "Command-line access" with a kubectl command to copy and paste and execute in terminal. Mine is:
     ```
@@ -128,7 +128,7 @@ It is possible to rearrange some of the steps below. Follow these exactly and yo
 
 3. Create RDMS pod + RDMS service - The RDMS pod and RDMS service should be the first component of the system diagram created. 
     * Navigate to `helpful-bunny-repo` directory on your local machine.
-    * We require 1, and only 1 RDMS pod running at all times. This *IS NOT* a highly available configuration, and so is only suitable to stage the API, UI, and Worker nodes for production. It is imperitive that only a single RDMS pod be running else it will certainly corrupt the database files on the RDMS PV should two RDMS pods attempt to use the same PV. If you wish to run replicated RDMS services then use something like Cloud SQL. There is no deployment required for this pod since we *DO NOT* wish for the kubelet to maintain any number of RDMS pods. If the RDMS pods do go down they may likely not start, or start with the risk of corrupting the data. So, in this failure scenario manual intervention is required to restore this service st least in the staging envorinment configuration. 
+    * We require 1, and only 1 RDMS pod running at all times. This *IS NOT* a highly available configuration, and so is only suitable to stage the API, UI, and Worker nodes for production. It is imperative that only a single RDMS pod be running else it will certainly corrupt the database files on the RDMS PV should two RDMS pods attempt to use the same PV. If you wish to run replicated RDMS services then use something like Cloud SQL. There is no deployment required for this pod since we *DO NOT* wish for the kubelet to maintain any number of RDMS pods. If the RDMS pods do go down they may likely not start, or start with the risk of corrupting the data. So, in this failure scenario manual intervention is required to restore this service st least in the staging environment configuration. 
         1. RDMS pod (`./k8s/pods/rdms-pod.yaml`) - Defines the RDMS "pod" (Collection of containers, PVs, etc.)
 
     * In order to create the RDMS pod, from project directory type:
@@ -158,7 +158,7 @@ It is possible to rearrange some of the steps below. Follow these exactly and yo
     service/rdms created
     ```
 
-    When complete, type these two comands into the terminal 1):
+    When complete, type these two commands into the terminal 1):
     ```
     kubectl get pods
     ```
@@ -181,7 +181,7 @@ It is possible to rearrange some of the steps below. Follow these exactly and yo
 
 4. Create Broker deployment + Broker service - The broker pod and broker service should be the first component of the system diagram created. 
     * Navigate to `helpful-bunny-repo` directory on your local machine.
-    * We require 1, and only 1 broker pod running at all times. This *IS NOT* a highly available configuration, and so is only suitable to stage the API, UI, and Worker nodes for production. This reason is not as dangerouse as with the RDMS pod since this broker act as a cache and is not expected to keep any data after restart by default. But more than 1 pod will have no effect as the API will only access a single redis instance (ip address). If you manage to proxy requests to a sentinel cluster then it could in theory work but that is not the intended configuration. 
+    * We require 1, and only 1 broker pod running at all times. This *IS NOT* a highly available configuration, and so is only suitable to stage the API, UI, and Worker nodes for production. This reason is not as dangerous as with the RDMS pod since this broker act as a cache and is not expected to keep any data after restart by default. But more than 1 pod will have no effect as the API will only access a single redis instance (ip address). If you manage to proxy requests to a sentinel cluster then it could in theory work but that is not the intended configuration. 
         1. broker deployment (`./k8s/deployments/broker-pod.yaml`) - Defines container + restart policy for Broker pod
 
     * In order to create the broker deployment, from project directory type:
@@ -202,7 +202,7 @@ It is possible to rearrange some of the steps below. Follow these exactly and yo
     broker-76d497b7-mcthj   1/1     Running   0          80s
     rdms                    1/1     Running   0          6m40s
     ```
-    (*Notice we are creating a deplyment here instead of a pod. The difference is that we have a restart policy associated with the broker container. A single container, with no restart or replication policy can be run as a pod. But a pod + restart/replication policy is called combined in what you would call a deployment.*)
+    (*Notice we are creating a deployment here instead of a pod. The difference is that we have a restart policy associated with the broker container. A single container, with no restart or replication policy can be run as a pod. But a pod + restart/replication policy is called combined in what you would call a deployment.*)
 
     * In order to create the broker service (making the broker pod available to the outside world), from project directory type:
     ```
@@ -213,7 +213,7 @@ It is possible to rearrange some of the steps below. Follow these exactly and yo
     service/broker created
     ```
 
-    When complete, type these two comands into the terminal 1):
+    When complete, type these two commands into the terminal 1):
     ```
     kubectl get deployments
     ```
@@ -304,15 +304,15 @@ It is possible to rearrange some of the steps below. Follow these exactly and yo
         web          NodePort       10.12.12.104   <none>           8080:30538/TCP   2m33s
         worker       ClusterIP      10.12.13.49    <none>           8880/TCP         2m27s
         ```
-(*Note that nay ip addresses assigned to services here are created by Google and are ephemeral meanining they change frequently, ex. on restart. Do not consider these to be static for testinog purposes etc.*)
+(*Note that nay ip addresses assigned to services here are created by Google and are ephemeral meaning they change frequently, ex. on restart. Do not consider these to be static for testing purposes etc.*)
 
-6. Create ingress controller - We wish now to create the ingress controller which will direct all incoming traffic to web service. In addition the ingress controller can be used to terminate SSL using using cert bot although that is not done here and will require a domain regitered with a DNS provider (this can also be done though GCP but any DNS will do).
+6. Create ingress controller - We wish now to create the ingress controller which will direct all incoming traffic to web service. In addition the ingress controller can be used to terminate SSL using using cert bot although that is not done here and will require a domain registered with a DNS provider (this can also be done though GCP but any DNS will do).
     * Navigate to `helpful-bunny-repo` directory on your local machine.
-    1. Ingress Controller (`./k8s/ingresscontroller/ingress-contorller.yaml`) - Exposes web nodes to the web.
+    1. Ingress Controller (`./k8s/ingresscontroller/ingress-controller.yaml`) - Exposes web nodes to the web.
 
     * In order to create the broker service (making the broker pod available to the outside world), from project directory type:
     ```
-    kubectl create -f ./k8s/ingresscontroller/ingress-contorller.yaml
+    kubectl create -f ./k8s/ingresscontroller/ingress-controller.yaml
     ```
     and you should receive a return message
     ```
@@ -336,7 +336,7 @@ The typical task logic is as follows:
 
 ![](../jpegs/exec/GEN-DWA-EXC.jpeg)
 
-The task execution business logic is implmented is in Python 3.7 using Celery for task execution, and Django + DRF in order to provide a custom REST service around busniess logic. Like much in Python, the implmentation occurs at high level by invoking methods of related class object. It assumed the user is familiar with Python 3.X.
+The task execution business logic is implemented is in Python 3.7 using Celery for task execution, and Django + DRF in order to provide a custom REST service around business logic. Like much in Python, the implementation occurs at high level by invoking methods of related class object. It assumed the user is familiar with Python 3.X.
 
 * More on Django and associated documentation can be found here: https://www.djangoproject.com/
 * More on D.R.F. and associated documentation can be found here: https://www.django-rest-framework.org/
@@ -345,4 +345,3 @@ The task execution business logic is implmented is in Python 3.7 using Celery fo
 ## Deployment options
 
 The target deployment environment is Kubernetes. Although, with the materials provided here it should be straight forward to implement the system in any environment that supports the Docker container runtime.
-
